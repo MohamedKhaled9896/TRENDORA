@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>Trendora | نموذج شحن منتج</title>
+    <link rel="stylesheet" href="form.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;400&display=swap" rel="stylesheet">
+    <style>
+        body, input, textarea, button, label, h2, .header {
+            font-family: 'Cairo', Arial, sans-serif !important;
+            direction: rtl;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-anim">
+        <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="header glitch" data-text="TRENDORA" style="direction: ltr; text-align: right;">TRENDORA</div>
+    <div class="container">
+        <h2 style="text-align:center;color:#6366f1;margin-bottom:18px;">نموذج شحن منتج</h2>
+        <form id="shippingForm">
+            <label for="name">الاسم الكامل</label>
+            <input type="text" id="name" name="name" required placeholder="اكتب اسمك هنا">
+
+            <label for="phone">رقم الهاتف</label>
+            <input type="tel" id="phone" name="phone" required placeholder="مثال: 01012345678">
+
+            <label for="governorate">المحافظة</label>
+            <select id="governorate" name="governorate" required>
+                <option value="">اختر المحافظة</option>
+                <option value="القاهرة">القاهرة</option>
+                <option value="الجيزة">الجيزة</option>
+                <option value="الإسكندرية">الإسكندرية</option>
+                <option value="الدقهلية">الدقهلية</option>
+                <option value="البحر الأحمر">البحر الأحمر</option>
+                <option value="البحيرة">البحيرة</option>
+                <option value="الفيوم">الفيوم</option>
+                <option value="الغربية">الغربية</option>
+                <option value="الإسماعيلية">الإسماعيلية</option>
+                <option value="المنوفية">المنوفية</option>
+                <option value="المنيا">المنيا</option>
+                <option value="القليوبية">القليوبية</option>
+                <option value="الوادي الجديد">الوادي الجديد</option>
+                <option value="السويس">السويس</option>
+                <option value="اسوان">اسوان</option>
+                <option value="اسيوط">اسيوط</option>
+                <option value="بني سويف">بني سويف</option>
+                <option value="بورسعيد">بورسعيد</option>
+                <option value="دمياط">دمياط</option>
+                <option value="الشرقية">الشرقية</option>
+                <option value="جنوب سيناء">جنوب سيناء</option>
+                <option value="كفر الشيخ">كفر الشيخ</option>
+                <option value="مطروح">مطروح</option>
+                <option value="الأقصر">الأقصر</option>
+                <option value="قنا">قنا</option>
+                <option value="شمال سيناء">شمال سيناء</option>
+                <option value="سوهاج">سوهاج</option>
+            </select>
+
+            <label for="city">المدينة</label>
+            <input type="text" id="city" name="city" required placeholder="اكتب اسم المدينة">
+
+            <label for="street">اسم الشارع</label>
+            <input type="text" id="street" name="street" required placeholder="اسم الشارع بالتفصيل">
+
+            <label for="product">اسم المنتج</label>
+            <input type="text" id="product" name="product" required placeholder="اسم المنتج المطلوب" readonly>
+            <button type="submit">إرسال</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script src="form.js"></script>
+    <script>
+        // إرسال البيانات إلى Google Form
+        const form = document.getElementById('shippingForm');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('result').innerText = 'جاري الإرسال...';
+
+            // ربط الحقول مع entry.xxxxx
+            const data = new FormData();
+            data.append('entry.2053912273', document.getElementById('name').value);      // الاسم الكامل
+            data.append('entry.1781759623', document.getElementById('phone').value);     // رقم الهاتف
+            data.append('entry.157046117', document.getElementById('governorate').value); // المحافظة
+            data.append('entry.1612202771', document.getElementById('city').value);      // المدينة
+            data.append('entry.697756909', document.getElementById('street').value);     // اسم الشارع
+            data.append('entry.1523635827', document.getElementById('product').value);   // اسم المنتج
+
+            fetch('https://docs.google.com/forms/u/0/d/e/1FAIpQLSdBVH32_L0Kjz8EX6-VA2fhf4fXOySggvL6-Ss1KMcUEltw5Q/formResponse', {
+                method: 'POST',
+                mode: 'no-cors',
+                body: data
+            }).then(() => {
+                document.getElementById('result').innerText = 'تم إرسال البيانات بنجاح!';
+                form.reset();
+            }).catch(() => {
+                document.getElementById('result').innerText = 'حدث خطأ أثناء الإرسال.';
+            });
+        });
+
+        // تطبيق الثيم حسب localStorage
+        (function() {
+            try {
+                var theme = localStorage.getItem('trendora-theme');
+                if (theme === 'dark') {
+                    document.body.classList.add('dark');
+                }
+            } catch(e){}
+        })();
+
+        // تعبئة اسم المنتج تلقائياً من localStorage
+        (function() {
+            try {
+                var productName = localStorage.getItem('trendora-product-name');
+                if (productName) {
+                    document.getElementById('product').value = productName;
+                }
+            } catch(e){}
+        })();
+    </script>
+</body>
+</html>
