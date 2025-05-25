@@ -5,6 +5,7 @@
     <title>Trendora | نموذج شحن منتج</title>
     <link rel="stylesheet" href="form.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;400&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body, input, textarea, button, label, h2, .header {
             font-family: 'Cairo', Arial, sans-serif !important;
@@ -95,6 +96,9 @@
             }).then(() => {
                 document.getElementById('result').innerText = 'تم إرسال البيانات بنجاح!';
                 form.reset();
+                setTimeout(function() {
+                    window.location.href = '../index.html';
+                }, 2000);
             }).catch(() => {
                 document.getElementById('result').innerText = 'حدث خطأ أثناء الإرسال.';
             });
